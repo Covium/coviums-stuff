@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="1000"><style>
+    #light-icon {
+      display: inline;
+    }
+    #dark-icon {
+      display: none;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      #light-icon {
+        display: none;
+      }
+      #dark-icon {
+        display: inline;
+      }
+    }
+  </style><g id="light-icon"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="1000"><g><g transform="matrix(31.25,0,0,31.25,0,0)"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M14 25.75L16 29L18 25.75H14Z" fill="#0B0C0C"></path>
+<path d="M26 12.75V3L19.3333 12.75M26 12.75H19.3333M26 12.75V20.875L20 22.5M26 12.75L20 22.5M6 12.75V3L12.6667 12.75M6 12.75H12.6667M6 12.75V20.875L12 22.5M6 12.75L12 22.5M12.6667 12.75H19.3333M12 22.5L14 25.75M20 22.5L18 25.75M14 25.75L16 29L18 25.75M14 25.75H18" stroke="#0B0C0C" stroke-width="2" stroke-linejoin="round"></path>
+</svg></svg></g></g></svg></g><g id="dark-icon"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="1000"><g><g transform="matrix(31.25,0,0,31.25,0,0)"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M14 25.75L16 29L18 25.75H14Z" fill="white"></path>
+<path d="M26 12.75V3L19.3333 12.75M26 12.75H19.3333M26 12.75V20.875L20 22.5M26 12.75L20 22.5M6 12.75V3L12.6667 12.75M6 12.75H12.6667M6 12.75V20.875L12 22.5M6 12.75L12 22.5M12.6667 12.75H19.3333M12 22.5L14 25.75M20 22.5L18 25.75M14 25.75L16 29L18 25.75M14 25.75H18" stroke="white" stroke-width="2" stroke-linejoin="round"></path>
+</svg></svg></g></g></svg></g></svg>

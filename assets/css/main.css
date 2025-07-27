@@ -1,0 +1,28 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-obsidian-50: oklch(95.66% 0.006 196.77);
+  --color-obsidian-100: oklch(91.2% 0.01 196.81);
+  --color-obsidian-200: oklch(82.66% 0.009 196.81);
+  --color-obsidian-300: oklch(73.24% 0.008 196.81);
+  --color-obsidian-400: oklch(64.51% 0.007 196.81);
+  --color-obsidian-500: oklch(55.81% 0.006 196.81);
+  --color-obsidian-600: oklch(47.48% 0.005 196.81);
+  --color-obsidian-700: oklch(38.76% 0.004 196.81);
+  --color-obsidian-800: oklch(30.22% 0.004 196.8);
+  --color-obsidian-900: oklch(20.69% 0.003 196.79);
+  --color-obsidian-950: oklch(15.32% 0.002 196.81);
+
+  --font-display: 'Varela Round', 'sans-serif';
+  --font-sans: 'Varela', 'sans-serif';
+  --font-mono: 'Sono', 'monospace';
+
+  --default-transition-timing-function: var(--ease-out);
+  --default-transition-duration: 250ms;
+}
+
+@layer base {
+  button {
+    cursor: pointer;
+  }
+}
