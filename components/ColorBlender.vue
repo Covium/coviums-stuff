@@ -176,9 +176,11 @@ const copyColor = (color: string) => {
           </ColorPicker>
 
           <div class="flex flex-col gap-y-1">
-            <div
+            <TransitionGroup
               v-for="(group, index) in middleColors"
               :key="index"
+              tag="div"
+              name="color"
               class="flex justify-stretch gap-x-1"
             >
               <button
@@ -198,7 +200,7 @@ const copyColor = (color: string) => {
                   {{ color!.label }}
                 </span>
               </button>
-            </div>
+            </TransitionGroup>
           </div>
 
           <ColorPicker
@@ -246,5 +248,15 @@ const copyColor = (color: string) => {
 
 .change-depth-button:disabled {
   @apply cursor-not-allowed bg-fuchsia-900;
+}
+
+.color-enter-active,
+.color-leave-active {
+  @apply scale-100 transition-[scale];
+}
+
+.color-enter-from,
+.color-leave-to {
+  @apply scale-0;
 }
 </style>
