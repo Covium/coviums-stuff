@@ -14,7 +14,11 @@ function toastClass(type: string) {
 </script>
 
 <template>
-  <div class="fixed bottom-2 left-2 z-50 flex flex-col gap-y-2">
+  <TransitionGroup
+    name="toast"
+    tag="div"
+    class="fixed bottom-2 left-2 z-50 flex flex-col gap-y-2"
+  >
     <div
       v-for="toast in toasts"
       :key="toast.id"
@@ -31,5 +35,20 @@ function toastClass(type: string) {
       <component :is="toast.message" v-if="isVNode(toast.message)" />
       <span v-else>{{ toast.message }}</span>
     </div>
-  </div>
+  </TransitionGroup>
 </template>
+
+<style scoped>
+@reference 'tailwindcss';
+
+.toast-move,
+.toast-enter-active,
+.toast-leave-active {
+  @apply transition-[translate,opacity,transform] duration-250;
+}
+
+.toast-enter-from,
+.toast-leave-to {
+  @apply -translate-x-1/2 opacity-0;
+}
+</style>
