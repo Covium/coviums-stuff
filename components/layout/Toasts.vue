@@ -44,7 +44,7 @@ function toastClass(type: string) {
 .toast-move,
 .toast-enter-active,
 .toast-leave-active {
-  @apply transition-[translate,opacity,transform] duration-250;
+  @apply transition-[translate,opacity,transform];
 }
 
 .toast-enter-from,
