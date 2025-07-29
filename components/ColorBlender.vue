@@ -241,7 +241,7 @@ const copyColor = (color: string) => {
 }
 
 .change-depth-button {
-  @apply h-6 w-6 bg-fuchsia-700 transition-colors;
+  @apply h-6 w-6 bg-fuchsia-700 transition-[background-color];
 }
 
 .change-depth-button:disabled {
