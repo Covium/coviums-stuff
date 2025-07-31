@@ -29,6 +29,6 @@
 @reference 'tailwindcss';
 
 .pattern {
-  @apply absolute h-65 w-65 rounded-full bg-center bg-repeat opacity-50 transition-[translate];
+  @apply absolute h-65 w-65 rounded-full bg-center bg-repeat opacity-25 transition-[translate,opacity] md:opacity-50 xl:opacity-75;
 }
 </style>
