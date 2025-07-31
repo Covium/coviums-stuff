@@ -52,13 +52,13 @@ const getModLink = (game: GameWithMods, mod: Mod): string => {
           <dl>
             <template v-for="mod in game.mods" :key="mod.name">
               <dt class="mt-2 px-7">
-                <NuxtLink
+                <CommonLink
                   :to="getModLink(game, mod)"
                   target="_blank"
                   class="text-md text-yellow-100"
                 >
                   {{ mod.name }}
-                </NuxtLink>
+                </CommonLink>
               </dt>
               <dd class="mb-2 px-3 indent-2 text-sm italic">
                 {{ mod.description }}
