@@ -43,6 +43,7 @@ export default defineNuxtConfig({
       meta: [{ name: 'apple-mobile-web-app-title', content: "Covium's" }],
     },
   },
+  ssr: false,
 
   modules: [
     '@nuxt/devtools',
