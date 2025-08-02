@@ -6,6 +6,7 @@ export default defineNuxtConfig({
   devServer: { port: 5173 },
 
   app: {
+    baseURL: '/',
     head: {
       title: "Covium's Stuff",
       htmlAttrs: {
