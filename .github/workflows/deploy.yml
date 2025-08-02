@@ -1,0 +1,34 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - run: npm ci
+      - run: npx nuxi generate
+
+      - name: Create .nojekyll
+        run: touch dist/.nojekyll
+
+      - name: Deploy to GitHub Pages repo
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          external_repository: Covium/Covium.github.io
+          publish_branch: main
+          publish_dir: ./dist
+          personal_token: ${{ secrets.GH_PAGES_DEPLOY_TOKEN }}
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
