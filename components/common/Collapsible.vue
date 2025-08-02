@@ -7,7 +7,10 @@ const calculateHeight = () => {
 };
 
 onMounted(() => {
-  calculateHeight();
+  nextTick(() => {
+    calculateHeight();
+  });
+
   window.addEventListener('resize', calculateHeight);
 });
 
