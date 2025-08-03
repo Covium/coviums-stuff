@@ -36,7 +36,8 @@ const getModLink = (game: GameWithMods, mod: Mod): string => {
             @click.stop
           />
           <button
-            class="flex w-full justify-between bg-fuchsia-950 px-3 py-2 text-left text-lg"
+            class="hover:bg-obsidian-900 flex w-full justify-between px-3 py-2 text-left text-lg transition-[background-color]"
+            :class="[isOpen ? 'bg-obsidian-900' : 'bg-fuchsia-950']"
           >
             {{ game.name }}
             <Icon
