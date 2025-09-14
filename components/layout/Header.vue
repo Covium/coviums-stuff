@@ -3,7 +3,7 @@
     class="relative flex flex-col items-center justify-center overflow-clip bg-fuchsia-950 p-3.5 transition-[padding] sm:p-6 md:p-9"
   >
     <IconFox
-      class="absolute top-1/2 left-1/2 -translate-1/2 opacity-25 transition-[width,height] sm:h-39 sm:w-39 md:h-58.5 md:w-58.5"
+      class="pointer-events-none absolute top-1/2 left-1/2 -translate-1/2 opacity-25 transition-[width,height] sm:h-39 sm:w-39 md:h-58.5 md:w-58.5"
     />
     <div
       class="pattern -top-13 left-0 -translate-x-1/2 bg-[url(/assets/icons/Marker.svg)] xl:-left-13 xl:translate-x-0"
