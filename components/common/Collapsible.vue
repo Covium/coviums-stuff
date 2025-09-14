@@ -20,6 +20,9 @@ onUnmounted(() => {
 
 const isOpen = ref(false);
 const toggle = () => {
+  if (!isOpen.value) {
+    calculateHeight();
+  }
   isOpen.value = !isOpen.value;
 };
 </script>
