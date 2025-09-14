@@ -6,10 +6,10 @@
       class="pointer-events-none absolute top-1/2 left-1/2 -translate-1/2 opacity-25 transition-[width,height] sm:h-39 sm:w-39 md:h-58.5 md:w-58.5"
     />
     <div
-      class="pattern -top-13 left-0 -translate-x-1/2 bg-[url(/assets/icons/Marker.svg)] xl:-left-13 xl:translate-x-0"
+      class="pattern pointer-events-none -top-13 left-0 -translate-x-1/2 bg-[url(/assets/icons/Marker.svg)] xl:-left-13 xl:translate-x-0"
     />
     <div
-      class="pattern right-0 -bottom-13 translate-x-1/2 bg-[url(/assets/icons/Diagonals.svg)] xl:-right-13 xl:translate-x-0"
+      class="pattern pointer-events-none right-0 -bottom-13 translate-x-1/2 bg-[url(/assets/icons/Diagonals.svg)] xl:-right-13 xl:translate-x-0"
     />
 
     <h1
