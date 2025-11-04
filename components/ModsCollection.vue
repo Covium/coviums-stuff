@@ -42,7 +42,7 @@ const getModLink = (game: GameWithMods, mod: Mod): string => {
             {{ game.name }}
             <Icon
               name="ic:round-keyboard-arrow-right"
-              class="transition-[rotate]"
+              class="shrink-0 transition-[rotate]"
               :class="{ 'rotate-90': isOpen }"
               size="1.75rem"
             />

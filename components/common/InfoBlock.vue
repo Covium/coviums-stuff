@@ -10,14 +10,10 @@ defineProps({
   <div
     class="bg-obsidian-950 flex h-fit w-full flex-col overflow-clip rounded-3xl border-4 border-fuchsia-700"
   >
-    <div class="bg-obsidian-800 relative flex items-center justify-center p-2">
-      <Icon
-        v-if="iconName"
-        class="absolute top-1/2 left-2 -translate-y-1/2"
-        :name="iconName"
-        size="1.75rem"
-      />
+    <div class="bg-obsidian-800 flex items-center justify-between gap-x-2 p-2">
+      <Icon v-if="iconName" :name="iconName" size="1.75rem" class="shrink-0" />
       <h3 v-if="title" class="font-display text-center text-xl">{{ title }}</h3>
+      <div class="w-[1.75rem] shrink-1" />
     </div>
     <div
       v-if="description"
