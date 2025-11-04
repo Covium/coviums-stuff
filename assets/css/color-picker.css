@@ -1,7 +1,11 @@
 @import 'tailwindcss';
 
 :root {
-  --colorPickerBg: var(--color-obsidian-900) !important;
+  --colorPickerBg: color-mix(
+    in srgb,
+    var(--color-obsidian-900) 75%,
+    transparent
+  ) !important;
   --colorPickerInputTitle: white !important;
   --colorPickerInputTitleBg: var(--color-obsidian-800) !important;
   --colorPickerInputText: white !important;
@@ -11,8 +15,4 @@
   --colorPickerShadowOut: none !important;
   --colorPickerShadowIn: none !important;
   --colorPickerSlider: var(--color-obsidian-950) !important;
-}
-
-.CP-block {
-  @apply border-2 border-fuchsia-700;
 }
