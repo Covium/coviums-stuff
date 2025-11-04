@@ -131,18 +131,14 @@ const copyColor = (color: string) => {
     <div class="flex w-full flex-col items-center gap-4 p-4">
       <div class="flex h-fit overflow-clip rounded-full">
         <button
-          class="change-depth-button"
-          :disabled="depthLevel.current.value === depthLevel.max"
-          @click="changeDepthLevel('add')"
+          class="hover:bg-obsidian-900 h-6 w-15 bg-fuchsia-700 transition-[background-color]"
+          @click="
+            changeDepthLevel(
+              depthLevel.current.value === depthLevel.min ? 'add' : 'subtract',
+            )
+          "
         >
-          <Icon name="ic:round-plus" size="1.5rem" />
-        </button>
-        <button
-          class="change-depth-button"
-          :disabled="depthLevel.current.value === depthLevel.min"
-          @click="changeDepthLevel('subtract')"
-        >
-          <Icon name="ic:round-minus" size="1.5rem" />
+          {{ depthLevel.current.value === depthLevel.min ? 'More' : 'Less' }}
         </button>
       </div>
 
@@ -239,15 +235,7 @@ const copyColor = (color: string) => {
 @reference "tailwindcss";
 
 .color-block {
-  @apply min-h-8 min-w-8 overflow-clip rounded-sm inset-ring;
-}
-
-.change-depth-button {
-  @apply h-6 w-6 bg-fuchsia-700 transition-[background-color];
-}
-
-.change-depth-button:disabled {
-  @apply cursor-not-allowed bg-fuchsia-900;
+  @apply min-h-7 min-w-7 overflow-clip rounded-sm inset-ring transition-[min-height,min-width] sm:min-h-8 sm:min-w-8;
 }
 
 .color-enter-active,

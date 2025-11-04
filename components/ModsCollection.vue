@@ -30,14 +30,12 @@ const getModLink = (game: GameWithMods, mod: Mod): string => {
     <div v-if="gamesWithMods && gamesWithMods.length" class="w-full">
       <CommonCollapsible v-for="(game, index) in gamesWithMods" :key="game.id">
         <template #trigger="{ isOpen }">
-          <hr
-            v-if="index"
-            class="cursor-default border-t-2 text-fuchsia-700"
-            @click.stop
-          />
           <button
             class="hover:bg-obsidian-900 flex w-full justify-between px-3 py-2 text-left text-lg transition-[background-color]"
-            :class="[isOpen ? 'bg-obsidian-900' : 'bg-fuchsia-950']"
+            :class="[
+              isOpen ? 'bg-obsidian-900' : 'bg-fuchsia-950',
+              index ? 'border-t-2 border-fuchsia-700' : '',
+            ]"
           >
             {{ game.name }}
             <Icon
