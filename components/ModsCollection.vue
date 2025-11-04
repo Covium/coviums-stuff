@@ -52,7 +52,7 @@ const getModLink = (game: GameWithMods, mod: Mod): string => {
         <template #content>
           <dl>
             <template v-for="mod in game.mods" :key="mod.name">
-              <dt class="mt-2 px-7">
+              <dt class="mt-2 pr-3 pl-7">
                 <CommonLink
                   :to="getModLink(game, mod)"
                   target="_blank"
