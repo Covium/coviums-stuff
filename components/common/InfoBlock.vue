@@ -19,7 +19,7 @@ defineProps({
       v-if="description"
       class="bg-obsidian-700 flex items-center justify-center px-2 py-1 text-center"
     >
-      <h3 class="text-xs italic">{{ description }}</h3>
+      <h3 class="text-sm italic">{{ description }}</h3>
     </div>
     <div class="flex items-center justify-center-safe">
       <slot />
