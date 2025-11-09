@@ -35,7 +35,7 @@ const toggle = () => {
     <div
       ref="content"
       class="overflow-hidden transition-[max-height]"
-      :class="{ '!max-h-0': !isOpen }"
+      :class="{ 'max-h-0!': !isOpen }"
     >
       <slot name="content" />
     </div>
