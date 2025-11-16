@@ -67,41 +67,88 @@ const drawStars = () => {
         const opacity = (fadeStep + 1) / FADE_STEPS;
         drawStar(x, y, radius, shadowBlur, opacity);
         fadeStep++;
-        if (fadeStep < FADE_STEPS) {
-          setTimeout(fadeNext, FADE_STEP_DELAY);
-        }
+        if (fadeStep < FADE_STEPS) setTimeout(fadeNext, FADE_STEP_DELAY);
       };
       fadeNext();
     };
 
-    const drawNextStar = () => {
-      if (currentStar >= STAR_COUNT || !canvas.value) return;
+    const minDistance =
+      (Math.min(canvas.value.width, canvas.value.height) /
+        Math.sqrt(STAR_COUNT)) *
+      0.8;
+    const maxAttempts = 30;
+    const points: Array<{ x: number; y: number }> = [];
 
-      let x = Math.random() * canvas.value.width;
-      let y = Math.random() * canvas.value.height;
+    const isValidPosition = (x: number, y: number): boolean => {
+      if (
+        x < 0 ||
+        x >= canvas.value!.width ||
+        y < 0 ||
+        y >= canvas.value!.height
+      )
+        return false;
 
-      if (x >= textLeft && x <= textRight && y >= textTop && y <= textBottom) {
-        const side = Math.floor(Math.random() * 4);
-        if (side === 0) {
-          x = Math.random() * textLeft;
-        } else if (side === 1) {
-          x = Math.random() * (canvas.value.width - textRight) + textRight;
-        } else if (side === 2) {
-          y = Math.random() * textTop;
-        } else {
-          y = Math.random() * (canvas.value.height - textBottom) + textBottom;
+      if (x >= textLeft && x <= textRight && y >= textTop && y <= textBottom)
+        return false;
+
+      for (const point of points) {
+        const dx = x - point.x;
+        const dy = y - point.y;
+        if (dx * dx + dy * dy < minDistance * minDistance) return false;
+      }
+      return true;
+    };
+
+    const findValidPosition = (): { x: number; y: number } | null => {
+      if (!canvas.value) return null;
+
+      for (let attempt = 0; attempt < maxAttempts; attempt++) {
+        let x = Math.random() * canvas.value.width;
+        let y = Math.random() * canvas.value.height;
+
+        if (
+          x >= textLeft &&
+          x <= textRight &&
+          y >= textTop &&
+          y <= textBottom
+        ) {
+          const side = Math.floor(Math.random() * 4);
+          if (side === 0) {
+            x = Math.random() * textLeft;
+          } else if (side === 1) {
+            x = Math.random() * (canvas.value.width - textRight) + textRight;
+          } else if (side === 2) {
+            y = Math.random() * textTop;
+          } else {
+            y = Math.random() * (canvas.value.height - textBottom) + textBottom;
+          }
+        }
+
+        if (isValidPosition(x, y)) {
+          return { x, y };
         }
       }
 
+      return null;
+    };
+
+    for (let i = 0; i < STAR_COUNT; i++) {
+      const pos = findValidPosition();
+      if (pos) points.push(pos);
+    }
+
+    const drawNextStar = () => {
+      if (currentStar >= points.length || !canvas.value) return;
+
+      const point = points[currentStar];
       const radius = Math.random() * 2 + 1;
       const shadowBlur = Math.random() * 10;
-      fadeInStar(x, y, radius, shadowBlur);
+      fadeInStar(point.x, point.y, radius, shadowBlur);
       canvas.value.style.opacity = '100';
 
       currentStar++;
-      if (currentStar < STAR_COUNT) {
+      if (currentStar < points.length)
         starTimeout = setTimeout(drawNextStar, STAR_DRAW_DELAY);
-      }
     };
 
     drawNextStar();
@@ -111,9 +158,7 @@ const drawStars = () => {
 const debouncedDrawStars = () => {
   if (resizeTimeout) clearTimeout(resizeTimeout);
   if (canvas.value) canvas.value.style.opacity = '0';
-  resizeTimeout = setTimeout(() => {
-    drawStars();
-  }, 250);
+  resizeTimeout = setTimeout(() => drawStars(), 250);
 };
 
 onMounted(() => {
