@@ -2,14 +2,22 @@
 const canvas = ref<HTMLCanvasElement | null>(null);
 const headerText = ref<HTMLDivElement | null>(null);
 let resizeTimeout: ReturnType<typeof setTimeout> | null = null;
+let starTimeout: ReturnType<typeof setTimeout> | null = null;
 
 const drawStars = () => {
   if (!headerText.value || !canvas.value) return;
+
+  if (starTimeout) clearTimeout(starTimeout);
 
   let STAR_COUNT = 100;
   if (window.innerWidth < 512) STAR_COUNT = 25;
   else if (window.innerWidth < 640) STAR_COUNT = 40;
   else if (window.innerWidth < 1024) STAR_COUNT = 75;
+
+  const STAR_DRAW_DELAY = 25;
+  const FADE_DURATION = 250;
+  const FADE_STEPS = 10;
+  const FADE_STEP_DELAY = FADE_DURATION / FADE_STEPS;
 
   const textRect = headerText.value.getBoundingClientRect();
   const canvasRect = canvas.value.getBoundingClientRect();
@@ -24,10 +32,50 @@ const drawStars = () => {
 
   const ctx = canvas.value.getContext('2d');
   if (ctx) {
+    ctx.clearRect(0, 0, canvas.value.width, canvas.value.height);
     ctx.fillStyle = '#fffce1';
     ctx.shadowColor = '#fffce1';
-    for (let i = 0; i < STAR_COUNT; i++) {
-      ctx.shadowBlur = Math.random() * 20;
+
+    let currentStar = 0;
+
+    const drawStar = (
+      x: number,
+      y: number,
+      radius: number,
+      shadowBlur: number,
+      opacity: number,
+    ) => {
+      ctx.save();
+      ctx.globalAlpha = opacity;
+      ctx.shadowBlur = shadowBlur;
+      ctx.beginPath();
+      ctx.arc(x, y, radius, 0, 2 * Math.PI);
+      ctx.fill();
+      ctx.restore();
+    };
+
+    const fadeInStar = (
+      x: number,
+      y: number,
+      radius: number,
+      shadowBlur: number,
+    ) => {
+      let fadeStep = 0;
+      const fadeNext = () => {
+        if (fadeStep >= FADE_STEPS || !canvas.value) return;
+        const opacity = (fadeStep + 1) / FADE_STEPS;
+        drawStar(x, y, radius, shadowBlur, opacity);
+        fadeStep++;
+        if (fadeStep < FADE_STEPS) {
+          setTimeout(fadeNext, FADE_STEP_DELAY);
+        }
+      };
+      fadeNext();
+    };
+
+    const drawNextStar = () => {
+      if (currentStar >= STAR_COUNT || !canvas.value) return;
+
       let x = Math.random() * canvas.value.width;
       let y = Math.random() * canvas.value.height;
 
@@ -45,11 +93,17 @@ const drawStars = () => {
       }
 
       const radius = Math.random() * 2 + 1;
-      ctx.beginPath();
-      ctx.arc(x, y, radius, 0, 2 * Math.PI);
-      ctx.fill();
+      const shadowBlur = Math.random() * 10;
+      fadeInStar(x, y, radius, shadowBlur);
       canvas.value.style.opacity = '100';
-    }
+
+      currentStar++;
+      if (currentStar < STAR_COUNT) {
+        starTimeout = setTimeout(drawNextStar, STAR_DRAW_DELAY);
+      }
+    };
+
+    drawNextStar();
   }
 };
 
@@ -68,6 +122,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   if (resizeTimeout) clearTimeout(resizeTimeout);
+  if (starTimeout) clearTimeout(starTimeout);
   window.removeEventListener('resize', debouncedDrawStars);
 });
 </script>
