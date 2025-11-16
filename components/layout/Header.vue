@@ -11,8 +11,9 @@ const drawStars = () => {
 
   let STAR_COUNT = 100;
   if (window.innerWidth < 512) STAR_COUNT = 25;
-  else if (window.innerWidth < 640) STAR_COUNT = 40;
-  else if (window.innerWidth < 1024) STAR_COUNT = 75;
+  else if (window.innerWidth < 768) STAR_COUNT = 40;
+  else if (window.innerWidth < 1024) STAR_COUNT = 50;
+  else if (window.innerWidth < 1536) STAR_COUNT = 80;
 
   const STAR_DRAW_DELAY = 25;
   const FADE_DURATION = 250;
