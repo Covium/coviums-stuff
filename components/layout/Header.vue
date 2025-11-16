@@ -34,8 +34,19 @@ const drawStars = () => {
   const ctx = canvas.value.getContext('2d');
   if (ctx) {
     ctx.clearRect(0, 0, canvas.value.width, canvas.value.height);
-    ctx.fillStyle = '#fffce1';
-    ctx.shadowColor = '#fffce1';
+
+    const randomColor = () => {
+      const minR = 254,
+        minG = 249,
+        minB = 194;
+      const maxR = 255,
+        maxG = 255,
+        maxB = 255;
+      const r = Math.floor(Math.random() * (maxR - minR + 1) + minR);
+      const g = Math.floor(Math.random() * (maxG - minG + 1) + minG);
+      const b = Math.floor(Math.random() * (maxB - minB + 1) + minB);
+      return `rgb(${r}, ${g}, ${b})`;
+    };
 
     let currentStar = 0;
 
@@ -45,10 +56,13 @@ const drawStars = () => {
       radius: number,
       shadowBlur: number,
       opacity: number,
+      color: string,
     ) => {
       ctx.save();
       ctx.globalAlpha = opacity;
       ctx.shadowBlur = shadowBlur;
+      ctx.fillStyle = color;
+      ctx.shadowColor = color;
       ctx.beginPath();
       ctx.arc(x, y, radius, 0, 2 * Math.PI);
       ctx.fill();
@@ -60,12 +74,13 @@ const drawStars = () => {
       y: number,
       radius: number,
       shadowBlur: number,
+      color: string,
     ) => {
       let fadeStep = 0;
       const fadeNext = () => {
         if (fadeStep >= FADE_STEPS || !canvas.value) return;
         const opacity = (fadeStep + 1) / FADE_STEPS;
-        drawStar(x, y, radius, shadowBlur, opacity);
+        drawStar(x, y, radius, shadowBlur, opacity, color);
         fadeStep++;
         if (fadeStep < FADE_STEPS) setTimeout(fadeNext, FADE_STEP_DELAY);
       };
@@ -143,7 +158,8 @@ const drawStars = () => {
       const point = points[currentStar];
       const radius = Math.random() * 2 + 1;
       const shadowBlur = Math.random() * 10;
-      fadeInStar(point.x, point.y, radius, shadowBlur);
+      const color = randomColor();
+      fadeInStar(point.x, point.y, radius, shadowBlur, color);
       canvas.value.style.opacity = '100';
 
       currentStar++;
