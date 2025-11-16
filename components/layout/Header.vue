@@ -49,6 +49,24 @@ const drawStars = () => {
     };
 
     let currentStar = 0;
+    const completedStars: Array<{
+      x: number;
+      y: number;
+      radius: number;
+      shadowBlur: number;
+      color: string;
+    }> = [];
+    const fadingStars: Map<
+      string,
+      {
+        x: number;
+        y: number;
+        radius: number;
+        shadowBlur: number;
+        opacity: number;
+        color: string;
+      }
+    > = new Map();
 
     const drawStar = (
       x: number,
@@ -69,6 +87,25 @@ const drawStars = () => {
       ctx.restore();
     };
 
+    const redrawAllStars = () => {
+      if (!canvas.value) return;
+
+      ctx.clearRect(0, 0, canvas.value.width, canvas.value.height);
+      completedStars.forEach((star) => {
+        drawStar(star.x, star.y, star.radius, star.shadowBlur, 1, star.color);
+      });
+      fadingStars.forEach((star) => {
+        drawStar(
+          star.x,
+          star.y,
+          star.radius,
+          star.shadowBlur,
+          star.opacity,
+          star.color,
+        );
+      });
+    };
+
     const fadeInStar = (
       x: number,
       y: number,
@@ -76,14 +113,26 @@ const drawStars = () => {
       shadowBlur: number,
       color: string,
     ) => {
+      const starId = `${x}-${y}-${radius}`;
       let fadeStep = 0;
+
       const fadeNext = () => {
-        if (fadeStep >= FADE_STEPS || !canvas.value) return;
+        if (!canvas.value) return;
+
+        if (fadeStep >= FADE_STEPS) {
+          fadingStars.delete(starId);
+          completedStars.push({ x, y, radius, shadowBlur, color });
+          redrawAllStars();
+          return;
+        }
+
         const opacity = (fadeStep + 1) / FADE_STEPS;
-        drawStar(x, y, radius, shadowBlur, opacity, color);
+        fadingStars.set(starId, { x, y, radius, shadowBlur, opacity, color });
+        redrawAllStars();
         fadeStep++;
         if (fadeStep < FADE_STEPS) setTimeout(fadeNext, FADE_STEP_DELAY);
       };
+
       fadeNext();
     };
 
