@@ -21,10 +21,8 @@ jobs:
       - name: Install deps
         run: npm install
 
-      - name: Build
-        run: |
-          npm install
-          npm run generate
+      - name: Generate
+        run: npm run generate
 
       - name: Debug
         run: ls -la .output/public
@@ -35,5 +33,6 @@ jobs:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: '.output/public/'
+          source: '.output/public/*'
           target: '/var/www/covium'
+          strip_components: 2
