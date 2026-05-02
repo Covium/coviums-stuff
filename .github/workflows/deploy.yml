@@ -22,7 +22,12 @@ jobs:
         run: npm install
 
       - name: Build
-        run: npm run build
+        run: |
+          npm install
+          npm run generate
+
+      - name: Debug
+        run: ls -la .output/public
 
       - name: Deploy via SSH
         uses: appleboy/scp-action@v0.1.7
@@ -30,5 +35,5 @@ jobs:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: 'dist/*'
+          source: '.output/public/'
           target: '/var/www/covium'
