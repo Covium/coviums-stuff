@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deploy Vue App
 
 on:
   push:
@@ -6,29 +6,29 @@ on:
       - master
 
 jobs:
-  deploy:
+  build-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: 20
 
-      - run: npm install
-      - run: npx nuxi generate
+      - name: Install deps
+        run: npm install
 
-      - name: Create .nojekyll
-        run: touch dist/.nojekyll
+      - name: Build
+        run: npm run build
 
-      - name: Deploy to GitHub Pages repo
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Deploy via SSH
+        uses: appleboy/scp-action@v0.1.7
         with:
-          external_repository: Covium/Covium.github.io
-          publish_branch: main
-          publish_dir: ./dist
-          personal_token: ${{ secrets.GH_PAGES_DEPLOY_TOKEN }}
-          user_name: 'github-actions[bot]'
-          user_email: 'github-actions[bot]@users.noreply.github.com'
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: 'dist/*'
+          target: '/var/www/covium'
