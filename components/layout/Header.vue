@@ -3,22 +3,23 @@ const canvas = ref<HTMLCanvasElement | null>(null);
 const headerText = ref<HTMLDivElement | null>(null);
 let resizeTimeout: ReturnType<typeof setTimeout> | null = null;
 let starTimeout: ReturnType<typeof setTimeout> | null = null;
+let blinkFrame: number | null = null;
 
 const drawStars = () => {
   if (!headerText.value || !canvas.value) return;
 
   if (starTimeout) clearTimeout(starTimeout);
+  if (blinkFrame !== null) cancelAnimationFrame(blinkFrame);
 
-  let STAR_COUNT = 100;
-  if (window.innerWidth < 512) STAR_COUNT = 25;
-  else if (window.innerWidth < 768) STAR_COUNT = 40;
-  else if (window.innerWidth < 1024) STAR_COUNT = 50;
-  else if (window.innerWidth < 1536) STAR_COUNT = 80;
-
+  const STAR_COUNT = Math.floor(window.innerWidth / 20);
   const STAR_DRAW_DELAY = 25;
   const FADE_DURATION = 250;
   const FADE_STEPS = 10;
   const FADE_STEP_DELAY = FADE_DURATION / FADE_STEPS;
+  const BLINK_SELECTION_INTERVAL = 2500;
+  const STAR_BLINK_MIN_DURATION = 3000;
+  const STAR_BLINK_MAX_DURATION = 10000;
+  const BLINK_CHANCE_PER_STAR = (1 / STAR_COUNT) * 2;
 
   const textRect = headerText.value.getBoundingClientRect();
   const canvasRect = canvas.value.getBoundingClientRect();
@@ -49,13 +50,24 @@ const drawStars = () => {
     };
 
     let currentStar = 0;
+    let isBlinking = false;
+    let lastBlinkSelectionTime = 0;
+    let currentAnimationTime = 0;
     const completedStars: Array<{
+      id: string;
       x: number;
       y: number;
       radius: number;
       shadowBlur: number;
       color: string;
     }> = [];
+    const activeBlinkingStars: Map<
+      string,
+      {
+        startTime: number;
+        duration: number;
+      }
+    > = new Map();
     const fadingStars: Map<
       string,
       {
@@ -92,7 +104,26 @@ const drawStars = () => {
 
       ctx.clearRect(0, 0, canvas.value.width, canvas.value.height);
       completedStars.forEach((star) => {
-        drawStar(star.x, star.y, star.radius, star.shadowBlur, 1, star.color);
+        const activeBlink = activeBlinkingStars.get(star.id);
+        let starOpacity = 1;
+        if (activeBlink) {
+          const elapsed = currentAnimationTime - activeBlink.startTime;
+          if (elapsed >= activeBlink.duration) {
+            activeBlinkingStars.delete(star.id);
+          } else {
+            const progress = elapsed / activeBlink.duration;
+            starOpacity = (Math.cos(progress * 2 * Math.PI) + 1) / 2;
+          }
+        }
+
+        drawStar(
+          star.x,
+          star.y,
+          star.radius,
+          star.shadowBlur,
+          starOpacity,
+          star.color,
+        );
       });
       fadingStars.forEach((star) => {
         drawStar(
@@ -104,6 +135,49 @@ const drawStars = () => {
           star.color,
         );
       });
+    };
+
+    const startBlinking = () => {
+      if (isBlinking) return;
+      isBlinking = true;
+      const startTime = performance.now();
+      lastBlinkSelectionTime = startTime - BLINK_SELECTION_INTERVAL;
+
+      const selectStarsForBlink = (time: number) => {
+        const availableStars = completedStars.filter(
+          (star) => !activeBlinkingStars.has(star.id),
+        );
+        if (availableStars.length === 0) return;
+
+        const selectedStars = availableStars.filter(
+          () => Math.random() < BLINK_CHANCE_PER_STAR,
+        );
+
+        selectedStars.forEach((star) => {
+          activeBlinkingStars.set(star.id, {
+            startTime: time,
+            duration:
+              STAR_BLINK_MIN_DURATION +
+              Math.random() *
+                (STAR_BLINK_MAX_DURATION - STAR_BLINK_MIN_DURATION),
+          });
+        });
+      };
+
+      const animateBlink = (time: number) => {
+        if (!canvas.value) return;
+        currentAnimationTime = time;
+
+        while (time - lastBlinkSelectionTime >= BLINK_SELECTION_INTERVAL) {
+          lastBlinkSelectionTime += BLINK_SELECTION_INTERVAL;
+          selectStarsForBlink(lastBlinkSelectionTime);
+        }
+
+        redrawAllStars();
+        blinkFrame = requestAnimationFrame(animateBlink);
+      };
+
+      blinkFrame = requestAnimationFrame(animateBlink);
     };
 
     const fadeInStar = (
@@ -118,19 +192,21 @@ const drawStars = () => {
 
       const fadeNext = () => {
         if (!canvas.value) return;
+        fadeStep++;
+        const opacity = Math.min(fadeStep / FADE_STEPS, 1);
+        fadingStars.set(starId, { x, y, radius, shadowBlur, opacity, color });
+        redrawAllStars();
 
-        if (fadeStep >= FADE_STEPS) {
-          fadingStars.delete(starId);
-          completedStars.push({ x, y, radius, shadowBlur, color });
-          redrawAllStars();
+        if (fadeStep < FADE_STEPS) {
+          setTimeout(fadeNext, FADE_STEP_DELAY);
           return;
         }
 
-        const opacity = (fadeStep + 1) / FADE_STEPS;
-        fadingStars.set(starId, { x, y, radius, shadowBlur, opacity, color });
+        fadingStars.delete(starId);
+        completedStars.push({ id: starId, x, y, radius, shadowBlur, color });
         redrawAllStars();
-        fadeStep++;
-        if (fadeStep < FADE_STEPS) setTimeout(fadeNext, FADE_STEP_DELAY);
+        if (currentStar >= points.length && fadingStars.size === 0)
+          startBlinking();
       };
 
       fadeNext();
@@ -234,6 +310,7 @@ onMounted(() => {
 onUnmounted(() => {
   if (resizeTimeout) clearTimeout(resizeTimeout);
   if (starTimeout) clearTimeout(starTimeout);
+  if (blinkFrame !== null) cancelAnimationFrame(blinkFrame);
   window.removeEventListener('resize', debouncedDrawStars);
 });
 </script>
