@@ -131,7 +131,7 @@ const copyColor = (color: string) => {
     <div class="flex w-full flex-col items-center gap-4 p-4">
       <div class="flex h-fit overflow-clip rounded-full">
         <button
-          class="hover:bg-obsidian-900 h-6 w-15 bg-fuchsia-700 transition-[background-color]"
+          class="hover:bg-obsidian-900 h-6 w-15 bg-fuchsia-700 transition-colors"
           @click="
             changeDepthLevel(
               depthLevel.current.value === depthLevel.min ? 'add' : 'subtract',
@@ -240,7 +240,7 @@ const copyColor = (color: string) => {
 
 .color-enter-active,
 .color-leave-active {
-  @apply scale-100 transition-[scale];
+  @apply scale-100 transition-transform;
 }
 
 .color-enter-from,

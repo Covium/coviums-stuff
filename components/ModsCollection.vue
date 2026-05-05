@@ -31,7 +31,7 @@ const getModLink = (game: GameWithMods, mod: Mod): string => {
       <CommonCollapsible v-for="(game, index) in gamesWithMods" :key="game.id">
         <template #trigger="{ isOpen }">
           <button
-            class="hover:bg-obsidian-900 font-display flex w-full justify-between px-3 py-1.5 text-left text-lg transition-[background-color]"
+            class="hover:bg-obsidian-900 font-display flex w-full justify-between px-3 py-1.5 text-left text-lg transition-colors"
             :class="[
               isOpen ? 'bg-obsidian-900' : 'bg-fuchsia-950',
               index ? 'border-t-2 border-fuchsia-700' : '',
@@ -40,7 +40,7 @@ const getModLink = (game: GameWithMods, mod: Mod): string => {
             {{ game.name }}
             <Icon
               name="ic:round-keyboard-arrow-right"
-              class="shrink-0 transition-[rotate]"
+              class="shrink-0 transition-transform"
               :class="{ 'rotate-90': isOpen }"
               size="1.75rem"
             />
