@@ -16,10 +16,10 @@ const drawStars = () => {
   const FADE_DURATION = 250;
   const FADE_STEPS = 10;
   const FADE_STEP_DELAY = FADE_DURATION / FADE_STEPS;
-  const BLINK_SELECTION_INTERVAL = 2500;
+  const BLINK_SELECTION_INTERVAL = 500;
   const STAR_BLINK_MIN_DURATION = 3000;
   const STAR_BLINK_MAX_DURATION = 10000;
-  const BLINK_CHANCE_PER_STAR = (1 / STAR_COUNT) * 2;
+  const BLINK_CHANCE_PER_STAR = 1 / STAR_COUNT;
 
   const textRect = headerText.value.getBoundingClientRect();
   const canvasRect = canvas.value.getBoundingClientRect();
