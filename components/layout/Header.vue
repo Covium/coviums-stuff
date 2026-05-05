@@ -4,6 +4,7 @@ const headerText = ref<HTMLDivElement | null>(null);
 let resizeTimeout: ReturnType<typeof setTimeout> | null = null;
 let starTimeout: ReturnType<typeof setTimeout> | null = null;
 let blinkFrame: number | null = null;
+let lastViewportWidth = 0;
 
 const drawStars = () => {
   if (!headerText.value || !canvas.value) return;
@@ -297,12 +298,19 @@ const drawStars = () => {
 };
 
 const debouncedDrawStars = () => {
+  // Mobile browsers fire resize while scrolling as the URL bar collapses/expands.
+  // Only redraw on actual width changes so the header stays visually persistent.
+  const currentViewportWidth = window.innerWidth;
+  if (currentViewportWidth === lastViewportWidth) return;
+  lastViewportWidth = currentViewportWidth;
+
   if (resizeTimeout) clearTimeout(resizeTimeout);
   if (canvas.value) canvas.value.style.opacity = '0';
   resizeTimeout = setTimeout(() => drawStars(), 250);
 };
 
 onMounted(() => {
+  lastViewportWidth = window.innerWidth;
   drawStars();
   window.addEventListener('resize', debouncedDrawStars);
 });
