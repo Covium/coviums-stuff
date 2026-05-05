@@ -338,7 +338,7 @@ onUnmounted(() => {
 
     <div ref="headerText" class="font-display z-10 text-center">
       <h1
-        class="text-5xl transition-[font-size,line-height] sm:text-7xl md:text-8xl"
+        class="text-5xl font-medium transition-[font-size,line-height] sm:text-7xl md:text-8xl"
       >
         Covium's Stuff
       </h1>

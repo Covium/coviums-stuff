@@ -12,14 +12,16 @@ defineProps({
   >
     <div class="bg-obsidian-800 flex items-center justify-between gap-x-2 p-2">
       <Icon v-if="iconName" :name="iconName" size="1.75rem" class="shrink-0" />
-      <h3 v-if="title" class="font-display text-center text-xl">{{ title }}</h3>
+      <h2 v-if="title" class="font-display text-center text-xl font-medium">
+        {{ title }}
+      </h2>
       <div class="w-7 shrink" />
     </div>
     <div
       v-if="description"
       class="bg-obsidian-700 flex items-center justify-center px-2 py-0.5 text-center"
     >
-      <h3 class="text-sm italic">{{ description }}</h3>
+      <p class="text-sm italic">{{ description }}</p>
     </div>
     <div class="flex items-center justify-center-safe">
       <slot />
