@@ -34,7 +34,7 @@ const getModLink = (game: GameWithMods, mod: Mod): string => {
             class="hover:bg-obsidian-900 font-display flex w-full justify-between px-3 py-1.5 text-left text-lg transition-colors"
             :class="[
               isOpen ? 'bg-obsidian-900' : 'bg-fuchsia-950',
-              index ? 'border-t-2 border-fuchsia-700' : '',
+              { 'border-t-2 border-fuchsia-700': index },
             ]"
           >
             {{ game.name }}
