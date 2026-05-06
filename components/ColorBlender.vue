@@ -9,19 +9,25 @@ const interpolate = (a: number, b: number, numerator = 1, decimator = 2) => {
 };
 
 const Hex2RGB = (Hex: string) => {
+  const covertColor = (color: string, start: number, end: number): number => {
+    return parseInt(color.substring(start, end), 16);
+  };
+
   Hex = Hex.replace('#', '');
   return {
-    R: parseInt(Hex.substring(0, 2), 16),
-    G: parseInt(Hex.substring(2, 4), 16),
-    B: parseInt(Hex.substring(4, 6), 16),
+    R: covertColor(Hex, 0, 2),
+    G: covertColor(Hex, 2, 4),
+    B: covertColor(Hex, 4, 6),
   };
 };
 
 const RGB2Hex = (RGB: { R: number; G: number; B: number }) => {
+  const covertColor = (color: number): string => {
+    return color.toString(16).padStart(2, '0');
+  };
+
   let Hex = '';
-  Hex += RGB.R.toString(16).padStart(2, '0');
-  Hex += RGB.G.toString(16).padStart(2, '0');
-  Hex += RGB.B.toString(16).padStart(2, '0');
+  for (const color of Object.values(RGB)) Hex += covertColor(color);
   return '#' + Hex;
 };
 
