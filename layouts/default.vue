@@ -3,7 +3,7 @@
     <LayoutHeader class="shrink-0" />
     <div class="relative grow overflow-hidden">
       <div
-        class="pointer-events-none absolute inset-0 bg-white/3 mask-[url('/assets/icons/Diagonals.svg')] mask-size-[13px] mask-center mask-repeat"
+        class="pointer-events-none absolute inset-0 bg-white/3 mask-[url('/assets/icons/Diagonals.svg')] mask-size-[13px] mask-top-left mask-repeat"
       />
       <div class="relative z-0">
         <slot />
