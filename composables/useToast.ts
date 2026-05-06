@@ -25,7 +25,8 @@ export function useToast() {
       const matchingToasts = toasts.value.filter((t) => t.type === type);
       if (matchingToasts.length >= 3) {
         const oldest = matchingToasts[0];
-        toasts.value = toasts.value.filter((t) => t.id !== oldest.id);
+        if (oldest)
+          toasts.value = toasts.value.filter((t) => t.id !== oldest.id);
       }
     }
 

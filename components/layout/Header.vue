@@ -285,7 +285,7 @@ const drawStars = () => {
       const radius = Math.random() * 2 + 1;
       const shadowBlur = Math.random() * 10;
       const color = randomColor();
-      fadeInStar(point.x, point.y, radius, shadowBlur, color);
+      if (point) fadeInStar(point.x, point.y, radius, shadowBlur, color);
       canvas.value.style.opacity = '100';
 
       currentStar++;
