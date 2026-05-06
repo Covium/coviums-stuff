@@ -8,10 +8,19 @@ export const modSchema = z.object({
   id: z.number().optional(),
 });
 
+export const collectionSchema = z.object({
+  name: z.string(),
+  description: z.string(),
+  link: z.string().url().optional(),
+  provider: z.string().optional(),
+  id: z.string().optional(),
+});
+
 export const gameSchema = z.object({
   name: z.string(),
   sort: z.string(),
   slug: z.string(),
+  collections: z.array(collectionSchema),
   mods: z.array(modSchema),
 });
 

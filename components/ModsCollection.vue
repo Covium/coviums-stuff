@@ -3,6 +3,12 @@ const { data: gamesWithMods } = await useAsyncData(() =>
   queryCollection('mods').order('sort', 'ASC').all(),
 );
 
+const getCollectionLink = (
+  game: GameWithMods,
+  collection: Collection,
+): string =>
+  `https://www.nexusmods.com/games/${game.slug}/collections/${collection.id}`;
+
 const getModLink = (game: GameWithMods, mod: Mod): string => {
   const providers = {
     nexus: (slug: string, id: number): string =>
@@ -12,10 +18,9 @@ const getModLink = (game: GameWithMods, mod: Mod): string => {
   };
 
   if (mod.link) return mod.link;
-  else if (mod.provider && typeof mod.id === 'number') {
-    const fn = providers[mod.provider as keyof typeof providers];
-    if (fn) return fn(game.slug, mod.id);
-  }
+  const fn =
+    providers[mod.provider as keyof typeof providers] || providers.nexus;
+  if (mod.id) return fn(game.slug, mod.id);
   return '#0';
 };
 </script>
@@ -49,12 +54,29 @@ const getModLink = (game: GameWithMods, mod: Mod): string => {
 
         <template #content>
           <dl>
+            <template
+              v-for="collection in game.collections"
+              :key="collection.name"
+            >
+              <dt class="mt-2 pr-3 pl-7">
+                <CommonLink
+                  :to="getCollectionLink(game, collection)"
+                  target="_blank"
+                  class="text-md text-yellow-200 transition-colors hover:text-yellow-50"
+                >
+                  {{ collection.name }}
+                </CommonLink>
+              </dt>
+              <dd class="mb-2 px-3 indent-2 text-sm italic">
+                {{ collection.description }}
+              </dd>
+            </template>
             <template v-for="mod in game.mods" :key="mod.name">
               <dt class="mt-2 pr-3 pl-7">
                 <CommonLink
                   :to="getModLink(game, mod)"
                   target="_blank"
-                  class="text-md text-yellow-100"
+                  class="text-md text-yellow-100 transition-colors hover:text-yellow-50"
                 >
                   {{ mod.name }}
                 </CommonLink>
