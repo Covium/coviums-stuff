@@ -24,7 +24,7 @@ const getModLink = (game: GameWithMods, mod: Mod): string => {
   <CommonInfoBlock
     title="Mods"
     icon-name="ic:outline-build"
-    description="My favorite mods for my favorite games."
+    description="My favorite modifications for my favorite games."
     class="col-span-2"
   >
     <div v-if="gamesWithMods && gamesWithMods.length" class="w-full">
