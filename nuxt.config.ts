@@ -5,6 +5,11 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   devServer: { port: 5173 },
 
+  // Workaround Nuxt 4.4.4 + ssr:false vite-node IPC (github.com/nuxt/nuxt/issues/34957).
+  experimental: {
+    viteEnvironmentApi: true,
+  },
+
   app: {
     baseURL: '/',
     head: {
@@ -54,7 +59,12 @@ export default defineNuxtConfig({
     '@nuxt/icon',
     'nuxt-color-picker',
   ],
-  vite: { plugins: [tailwindcss()] },
+  vite: {
+    plugins: [tailwindcss()],
+    optimizeDeps: {
+      include: ['@vue/devtools-core', '@vue/devtools-kit'],
+    },
+  },
   css: ['~/assets/css/main.css', '~/assets/css/color-picker.css'],
   fonts: {
     families: [
