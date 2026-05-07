@@ -58,28 +58,35 @@ const getModLink = (game: GameWithMods, mod: Mod): string => {
               v-for="collection in game.collections"
               :key="collection.name"
             >
-              <dt class="mt-2 pr-3 pl-7">
+              <dt class="relative mt-2 pr-3 pl-7 text-yellow-200">
                 <CommonLink
                   :to="getCollectionLink(game, collection)"
                   target="_blank"
-                  class="text-md text-yellow-200 transition-colors hover:text-yellow-50"
+                  class="peer text-md transition-colors hover:text-yellow-50"
                 >
                   {{ collection.name }}
                 </CommonLink>
+                <IconCollection
+                  class="absolute top-0 left-0.5 size-6 transition-colors peer-hover:text-yellow-50"
+                />
               </dt>
               <dd class="mb-2 px-3 indent-2 text-sm italic">
                 {{ collection.description }}
               </dd>
             </template>
+
             <template v-for="mod in game.mods" :key="mod.name">
-              <dt class="mt-2 pr-3 pl-7">
+              <dt class="relative mt-2 pr-3 pl-7 text-yellow-100">
                 <CommonLink
                   :to="getModLink(game, mod)"
                   target="_blank"
-                  class="text-md text-yellow-100 transition-colors hover:text-yellow-50"
+                  class="peer text-md transition-colors hover:text-yellow-50"
                 >
                   {{ mod.name }}
                 </CommonLink>
+                <IconMod
+                  class="absolute top-0 left-0.5 size-6 transition-colors peer-hover:text-yellow-50"
+                />
               </dt>
               <dd class="mb-2 px-3 indent-2 text-sm italic">
                 {{ mod.description }}
