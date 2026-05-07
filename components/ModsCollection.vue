@@ -33,7 +33,10 @@ const getModLink = (game: GameWithMods, mod: Mod): string => {
     class="col-span-2"
   >
     <div v-if="gamesWithMods && gamesWithMods.length" class="w-full">
-      <CommonCollapsible v-for="(game, index) in gamesWithMods" :key="game.id">
+      <CommonCollapsible
+        v-for="(game, index) in gamesWithMods"
+        :key="game.sort"
+      >
         <template #trigger="{ isOpen }">
           <hr
             v-if="index"
