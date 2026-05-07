@@ -12,7 +12,7 @@ const props = defineProps<NuxtLinkProps>();
         v-if="props.target === '_blank'"
         name="ic:round-arrow-outward"
         size="0.75rem"
-        class="ml-1 inline align-super"
+        class="ml-0.5 inline align-super"
       />
     </span>
   </NuxtLink>
