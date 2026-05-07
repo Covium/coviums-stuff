@@ -55,42 +55,38 @@ const getModLink = (game: GameWithMods, mod: Mod): string => {
         </template>
 
         <template #content>
-          <dl>
+          <dl class="px-3">
             <template
               v-for="collection in game.collections"
               :key="collection.name"
             >
-              <dt class="relative mt-2 pr-3 pl-7 text-yellow-200">
+              <dt class="text-yellow-200">
                 <CommonLink
                   :to="getCollectionLink(game, collection)"
                   target="_blank"
-                  class="peer text-md transition-colors hover:text-yellow-50"
+                  class="link peer"
                 >
                   {{ collection.name }}
                 </CommonLink>
-                <IconCollection
-                  class="absolute top-0 left-0.5 size-6 transition-colors peer-hover:text-yellow-50"
-                />
+                <IconCollection class="icon peer-hover:text-yellow-50" />
               </dt>
-              <dd class="mb-2 px-3 indent-2 text-sm italic">
+              <dd>
                 {{ collection.description }}
               </dd>
             </template>
 
             <template v-for="mod in game.mods" :key="mod.name">
-              <dt class="relative mt-2 pr-3 pl-7 text-yellow-100">
+              <dt class="text-yellow-100">
                 <CommonLink
                   :to="getModLink(game, mod)"
                   target="_blank"
-                  class="peer text-md transition-colors hover:text-yellow-50"
+                  class="link peer"
                 >
                   {{ mod.name }}
                 </CommonLink>
-                <IconMod
-                  class="absolute top-0 left-0.5 size-6 transition-colors peer-hover:text-yellow-50"
-                />
+                <IconMod class="icon peer-hover:text-yellow-50" />
               </dt>
-              <dd class="mb-2 px-3 indent-2 text-sm italic">
+              <dd>
                 {{ mod.description }}
               </dd>
             </template>
@@ -100,3 +96,23 @@ const getModLink = (game: GameWithMods, mod: Mod): string => {
     </div>
   </CommonInfoBlock>
 </template>
+
+<style scoped>
+@reference 'tailwindcss';
+
+dt {
+  @apply relative mt-2 indent-4;
+}
+
+dd {
+  @apply mb-2 indent-2 text-sm italic;
+}
+
+.link {
+  @apply transition-colors hover:text-yellow-50;
+}
+
+.icon {
+  @apply absolute top-0 -left-2.5 size-6 transition-colors;
+}
+</style>
