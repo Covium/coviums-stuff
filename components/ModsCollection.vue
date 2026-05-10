@@ -106,7 +106,7 @@ const getModLink = (game: GameWithMods, mod: Mod): string => {
 @reference 'tailwindcss';
 
 dt {
-  @apply relative mt-2 pl-1;
+  @apply relative mt-2 pr-3 pl-1;
 }
 
 dd {
@@ -114,7 +114,7 @@ dd {
 }
 
 .link {
-  @apply pr-2 transition-colors hover:text-yellow-50;
+  @apply transition-colors hover:text-yellow-50;
 }
 
 :deep(.link-container) {
