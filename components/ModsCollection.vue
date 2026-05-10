@@ -58,7 +58,7 @@ const getModLink = (game: GameWithMods, mod: Mod): string => {
         </template>
 
         <template #content>
-          <dl class="px-3">
+          <dl>
             <template
               v-for="collection in game.collections"
               :key="collection.name"
@@ -68,6 +68,7 @@ const getModLink = (game: GameWithMods, mod: Mod): string => {
                   :to="getCollectionLink(game, collection)"
                   target="_blank"
                   class="link peer"
+                  container-class="link-container"
                 >
                   {{ collection.name }}
                 </CommonLink>
@@ -84,6 +85,7 @@ const getModLink = (game: GameWithMods, mod: Mod): string => {
                   :to="getModLink(game, mod)"
                   target="_blank"
                   class="link peer"
+                  container-class="link-container"
                 >
                   {{ mod.name }}
                 </CommonLink>
@@ -104,18 +106,22 @@ const getModLink = (game: GameWithMods, mod: Mod): string => {
 @reference 'tailwindcss';
 
 dt {
-  @apply relative mt-2 indent-4;
+  @apply relative mt-2 pl-1;
 }
 
 dd {
-  @apply mb-2 indent-2 text-sm italic;
+  @apply mb-2 px-3 indent-2 text-sm italic;
 }
 
 .link {
-  @apply transition-colors hover:text-yellow-50;
+  @apply pr-2 transition-colors hover:text-yellow-50;
+}
+
+:deep(.link-container) {
+  @apply pl-2 indent-4;
 }
 
 .icon {
-  @apply absolute top-0 -left-2.5 size-6 transition-colors;
+  @apply pointer-events-none absolute top-0 left-0.5 size-6 transition-colors;
 }
 </style>

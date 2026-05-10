@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type { NuxtLinkProps } from '#app';
 
-const props = defineProps<NuxtLinkProps>();
+const props = defineProps<NuxtLinkProps & { containerClass?: string }>();
 </script>
 
 <template>
   <NuxtLink v-bind="props" class="inline">
-    <span>
+    <span class="inline-block min-w-0" :class="props.containerClass">
       <slot />
       <Icon
         v-if="props.target === '_blank'"
