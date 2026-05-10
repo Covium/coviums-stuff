@@ -1,6 +1,6 @@
 {
   "name": "Covium's Stuff",
-  "short_name": "Covium's",
+  "short_name": "Covium's Stuff",
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",
@@ -15,7 +15,7 @@
       "purpose": "maskable"
     }
   ],
-  "theme_color": "#a800b7",
-  "background_color": "#0b0c0c",
+  "theme_color": "#000000",
+  "background_color": "#000000",
   "display": "standalone"
 }
