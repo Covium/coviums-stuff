@@ -67,12 +67,12 @@ const getModLink = (game: GameWithMods, mod: Mod): string => {
                 <CommonLink
                   :to="getCollectionLink(game, collection)"
                   target="_blank"
-                  class="link peer"
+                  class="link"
                   container-class="link-container"
                 >
+                  <IconCollection class="icon" />
                   {{ collection.name }}
                 </CommonLink>
-                <IconCollection class="icon peer-hover:text-yellow-50" />
               </dt>
               <dd>
                 {{ collection.description }}
@@ -84,12 +84,12 @@ const getModLink = (game: GameWithMods, mod: Mod): string => {
                 <CommonLink
                   :to="getModLink(game, mod)"
                   target="_blank"
-                  class="link peer"
+                  class="link"
                   container-class="link-container"
                 >
+                  <IconMod class="icon" />
                   {{ mod.name }}
                 </CommonLink>
-                <IconMod class="icon peer-hover:text-yellow-50" />
               </dt>
               <dd>
                 {{ mod.description }}
@@ -106,7 +106,7 @@ const getModLink = (game: GameWithMods, mod: Mod): string => {
 @reference 'tailwindcss';
 
 dt {
-  @apply relative mt-2 pr-3 pl-1;
+  @apply mt-2 pr-3 pl-1;
 }
 
 dd {
@@ -118,10 +118,10 @@ dd {
 }
 
 :deep(.link-container) {
-  @apply pl-2 indent-4;
+  @apply relative pl-2 indent-4;
 }
 
 .icon {
-  @apply pointer-events-none absolute top-0 left-0.5 size-6 transition-colors;
+  @apply pointer-events-none absolute top-0 -left-0.5 inline size-6 transition-colors;
 }
 </style>
