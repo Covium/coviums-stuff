@@ -1,11 +1,18 @@
 <script setup lang="ts">
 import type { NuxtLinkProps } from '#app';
+import { computed } from 'vue';
 
 const props = defineProps<NuxtLinkProps & { containerClass?: string }>();
+
+const nuxtLinkProps = computed(() => {
+  const { containerClass: _containerClass, prefetch, noPrefetch, ...rest } = props;
+  if (noPrefetch) return { ...rest, noPrefetch: true };
+  return { ...rest, prefetch };
+});
 </script>
 
 <template>
-  <NuxtLink v-bind="props" class="inline">
+  <NuxtLink v-bind="nuxtLinkProps" class="inline">
     <span class="inline-block min-w-0" :class="props.containerClass">
       <slot />
       <Icon
