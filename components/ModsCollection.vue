@@ -6,25 +6,21 @@ const { data: gamesWithMods } = await useAsyncData(() =>
   queryCollection('mods').order('sort', 'ASC').all(),
 );
 
-const getCollectionLink = (
+const getNexusLink = (
   game: GameWithMods,
-  collection: Collection,
-): string =>
-  `https://www.nexusmods.com/games/${game.slug}/collections/${collection.id}`;
+  item: Collection | Mod,
+): string | undefined => {
+  if (item.link) return item.link;
+  if (!item.id) return undefined;
 
-const getModLink = (game: GameWithMods, mod: Mod): string => {
-  const providers = {
-    nexus: (slug: string, id: number): string =>
-      `https://www.nexusmods.com/${slug}/mods/${id}`,
-    moddb: (slug: string, id: number): string =>
-      `https://www.moddb.com/mods/${slug}/downloads/${id}`,
-  };
-
-  if (mod.link) return mod.link;
-  const fn =
-    providers[mod.provider as keyof typeof providers] || providers.nexus;
-  if (mod.id) return fn(game.slug, mod.id);
-  return '#0';
+  switch (typeof item.id) {
+    case 'string':
+      return `https://www.nexusmods.com/games/${game.slug}/collections/${item.id}`;
+    case 'number':
+      return `https://www.nexusmods.com/${game.slug}/mods/${item.id}`;
+    default:
+      return undefined;
+  }
 };
 
 type GameModsListEntry = {
@@ -32,7 +28,7 @@ type GameModsListEntry = {
   key: string;
   name: string;
   description: string;
-  href: string;
+  href: string | undefined;
 };
 
 const getGameModsListEntries = (game: GameWithMods): GameModsListEntry[] => [
@@ -41,14 +37,14 @@ const getGameModsListEntries = (game: GameWithMods): GameModsListEntry[] => [
     key: `c:${c.id ?? c.name}`,
     name: c.name,
     description: c.description,
-    href: getCollectionLink(game, c),
+    href: getNexusLink(game, c),
   })),
   ...(game.mods ?? []).map((m) => ({
     kind: 'mod' as const,
     key: `m:${m.id ?? m.name}`,
     name: m.name,
     description: m.description,
-    href: getModLink(game, m),
+    href: getNexusLink(game, m),
   })),
 ];
 </script>
