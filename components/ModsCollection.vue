@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import IconCollection from '~/components/icon/Collection.vue';
+import IconMod from '~/components/icon/Mod.vue';
+
 const { data: gamesWithMods } = await useAsyncData(() =>
   queryCollection('mods').order('sort', 'ASC').all(),
 );
@@ -23,6 +26,31 @@ const getModLink = (game: GameWithMods, mod: Mod): string => {
   if (mod.id) return fn(game.slug, mod.id);
   return '#0';
 };
+
+type GameModsListEntry = {
+  kind: 'collection' | 'mod';
+  key: string;
+  name: string;
+  description: string;
+  href: string;
+};
+
+const getGameModsListEntries = (game: GameWithMods): GameModsListEntry[] => [
+  ...(game.collections ?? []).map((c) => ({
+    kind: 'collection' as const,
+    key: `c:${c.id ?? c.name}`,
+    name: c.name,
+    description: c.description,
+    href: getCollectionLink(game, c),
+  })),
+  ...(game.mods ?? []).map((m) => ({
+    kind: 'mod' as const,
+    key: `m:${m.id ?? m.name}`,
+    name: m.name,
+    description: m.description,
+    href: getModLink(game, m),
+  })),
+];
 </script>
 
 <template>
@@ -60,39 +88,32 @@ const getModLink = (game: GameWithMods, mod: Mod): string => {
         <template #content>
           <dl>
             <template
-              v-for="collection in game.collections"
-              :key="collection.name"
+              v-for="item in getGameModsListEntries(game)"
+              :key="item.key"
             >
-              <dt class="text-yellow-200">
+              <dt
+                class="mt-2 pr-3 pl-1"
+                :class="
+                  item.kind === 'collection'
+                    ? 'text-yellow-200'
+                    : 'text-yellow-100'
+                "
+              >
                 <CommonLink
-                  :to="getCollectionLink(game, collection)"
+                  :to="item.href"
                   target="_blank"
-                  class="link"
-                  container-class="link-container"
+                  class="transition-colors hover:text-yellow-50"
+                  container-class="relative pl-2 indent-4"
                 >
-                  <IconCollection class="icon" />
-                  {{ collection.name }}
+                  <component
+                    :is="item.kind === 'collection' ? IconCollection : IconMod"
+                    class="pointer-events-none absolute top-0 -left-0.5 inline size-6 transition-colors"
+                  />
+                  {{ item.name }}
                 </CommonLink>
               </dt>
-              <dd>
-                {{ collection.description }}
-              </dd>
-            </template>
-
-            <template v-for="mod in game.mods" :key="mod.name">
-              <dt class="text-yellow-100">
-                <CommonLink
-                  :to="getModLink(game, mod)"
-                  target="_blank"
-                  class="link"
-                  container-class="link-container"
-                >
-                  <IconMod class="icon" />
-                  {{ mod.name }}
-                </CommonLink>
-              </dt>
-              <dd>
-                {{ mod.description }}
+              <dd class="mb-2 px-3 indent-2 text-sm italic">
+                {{ item.description }}
               </dd>
             </template>
           </dl>
@@ -101,27 +122,3 @@ const getModLink = (game: GameWithMods, mod: Mod): string => {
     </div>
   </CommonInfoBlock>
 </template>
-
-<style scoped>
-@reference 'tailwindcss';
-
-dt {
-  @apply mt-2 pr-3 pl-1;
-}
-
-dd {
-  @apply mb-2 px-3 indent-2 text-sm italic;
-}
-
-.link {
-  @apply transition-colors hover:text-yellow-50;
-}
-
-:deep(.link-container) {
-  @apply relative pl-2 indent-4;
-}
-
-.icon {
-  @apply pointer-events-none absolute top-0 -left-0.5 inline size-6 transition-colors;
-}
-</style>
